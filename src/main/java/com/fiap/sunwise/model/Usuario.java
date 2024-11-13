@@ -5,6 +5,8 @@ import lombok.Data;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -29,6 +31,4 @@ public class Usuario {
     @Size(min = 3, message =  "{usuario.nome.size}")
     private String nomeEmpresa;
 
-    @OneToMany
-    private List<Projeto> projetos;
 }
