@@ -29,15 +29,6 @@ public class UsuarioController {
     @Autowired
     UsuarioRepository usuarioRepository;
 
-    @GetMapping
-    @Operation(summary = "Lista todos os usuários cadastrados no sistema.")
-    public List<UsuarioDTO> index(){
-        List<Usuario> usuarios = usuarioRepository.findAll();
-        return usuarios.stream()
-                .map(UsuarioDTO::transformaEmDTO)
-                .collect(Collectors.toList());
-    }
-
     @PostMapping
     @ResponseStatus(CREATED)
     @Operation(summary = "Cadastra um usuário no sistema.")
@@ -61,6 +52,15 @@ public class UsuarioController {
         }
 
         return ResponseEntity.ok(UsuarioDTO.transformaEmDTO(usuario));
+    }
+
+    @GetMapping
+    @Operation(summary = "Lista todos os usuários cadastrados no sistema.")
+    public List<UsuarioDTO> index(){
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        return usuarios.stream()
+                .map(UsuarioDTO::transformaEmDTO)
+                .collect(Collectors.toList());
     }
 
     @PutMapping("{id}")
@@ -94,5 +94,4 @@ public class UsuarioController {
 
         return ResponseEntity.noContent().build();
     }
-
 }
