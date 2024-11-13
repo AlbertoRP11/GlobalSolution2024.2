@@ -7,8 +7,14 @@ import jakarta.validation.constraints.NotBlank;
 
 @Data
 @Entity
-@Table(name = "TB_CNW_PROJETOS") 
+@Table(name = "TB_SNW_PROJETOS")
 public class Projeto {
+
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @NotBlank
+    private Long usuarioId;
 
     @NotBlank
     private double orcamento;
@@ -28,7 +34,6 @@ public class Projeto {
     @NotBlank
     private String impactoAmbiental;
 
-    @OneToMany
+    @OneToOne
     private Cliente cliente;
-
 }

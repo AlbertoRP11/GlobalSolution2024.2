@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;import jakarta.validation.constraints
 
 @Data
 @Entity
-@Table(name = "TB_CNW_CLIENTES") 
+@Table(name = "TB_SNW_CLIENTES")
 public class Cliente {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
