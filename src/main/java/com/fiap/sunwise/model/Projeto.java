@@ -1,9 +1,9 @@
 package com.fiap.sunwise.model;
 
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.*;
 import lombok.Data;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Data
 @Entity
@@ -13,26 +13,30 @@ public class Projeto {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotBlank
+    @NotNull
     private Long usuarioId;
 
-    @NotBlank
+    @NotNull
     private double orcamento;
 
-    @NotBlank
+    @NotNull
     private double consumoEnergetico;
 
-    @NotBlank
+    @NotNull
     private double tarifaMensal;
 
-    @NotBlank
+    
     private int tempoRetornoInvestimentoMeses;
-
-    @NotBlank
+   
+    private double economiaMensal;
+  
+    private String retornoEmAnos;
+  
     private double economia10Anos;
 
-    @NotBlank
     private String impactoAmbiental;
+
+    private double co2Evitado10Anos;
 
     @OneToOne
     private Cliente cliente;
