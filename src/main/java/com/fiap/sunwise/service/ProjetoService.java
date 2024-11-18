@@ -25,6 +25,10 @@ public class ProjetoService {
         return projeto.orElse(null);
     }
 
+    public List<Projeto> getProjetosByUsuarioId(Long usuarioId) {
+        return projetoRepository.findByUsuarioId(usuarioId);
+    }
+
     public List<Projeto> getAllProjetos() {
         return projetoRepository.findAll();
     }
@@ -46,7 +50,8 @@ public class ProjetoService {
     }
 
     private void calcularCamposProjeto(Projeto projeto) {
-        double economiaMensal = projeto.getConsumoEnergetico() * projeto.getTarifaMensal();
+        int taxaEnel = 50;
+        double economiaMensal = projeto.getTarifaMensal() - taxaEnel;
         projeto.setEconomiaMensal(economiaMensal);
 
         int tempoRetornoMeses = (int) Math.ceil(projeto.getOrcamento() / economiaMensal);
@@ -60,7 +65,9 @@ public class ProjetoService {
         double economia10Anos = economiaMensal * 12 * 10;
         projeto.setEconomia10Anos(economia10Anos);
 
-        double co2Evitado10Anos = projeto.getConsumoEnergetico() * 0.4 * 12 * 10;
+        double precoKwh = 0.50;
+        double consumoEnergetico = projeto.getTarifaMensal() / precoKwh;
+        double co2Evitado10Anos = consumoEnergetico * 0.4 * 12 * 10;
         projeto.setCo2Evitado10Anos(co2Evitado10Anos);
 
         projeto.setImpactoAmbiental(

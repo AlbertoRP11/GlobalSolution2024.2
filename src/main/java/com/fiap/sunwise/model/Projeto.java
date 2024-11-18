@@ -20,12 +20,8 @@ public class Projeto {
     private double orcamento;
 
     @NotNull
-    private double consumoEnergetico;
-
-    @NotNull
     private double tarifaMensal;
 
-    
     private int tempoRetornoInvestimentoMeses;
    
     private double economiaMensal;
