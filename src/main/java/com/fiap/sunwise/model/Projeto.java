@@ -10,7 +10,8 @@ import jakarta.validation.constraints.NotNull;
 @Table(name = "TB_SNW_PROJETOS")
 public class Projeto {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotNull
@@ -18,7 +19,7 @@ public class Projeto {
 
     @NotBlank
     private String nomeProjeto;
-    
+
     @NotNull
     private double orcamento;
 
@@ -26,11 +27,11 @@ public class Projeto {
     private double tarifaMensal;
 
     private int tempoRetornoInvestimentoMeses;
-   
+
     private double economiaMensal;
-  
+
     private String retornoEmAnos;
-  
+
     private double economia10Anos;
 
     private String impactoAmbiental;

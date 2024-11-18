@@ -1,7 +1,11 @@
 package com.fiap.sunwise.controller;
 
 import com.fiap.sunwise.model.Cliente;
+import com.fiap.sunwise.model.Projeto;
 import com.fiap.sunwise.repository.ClienteRepository;
+import com.fiap.sunwise.service.ClienteService;
+import com.fiap.sunwise.service.ProjetoService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -20,6 +24,8 @@ public class ClienteController {
 
     @Autowired
     private ClienteRepository clienteRepository;
+     @Autowired
+    private ClienteService clienteService;
 
     @PostMapping
     @Operation(summary = "Cadastra um cliente no sistema.")
@@ -33,6 +39,16 @@ public class ClienteController {
     public ResponseEntity<Cliente> buscarClientePorId(@PathVariable Long id) {
         Optional<Cliente> cliente = clienteRepository.findById(id);
         return cliente.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/usuario/{usuarioId}")
+    @Operation(summary = "Busca todos os Clientes de um usuário.")
+    public ResponseEntity<List<Cliente>> getClientesByUsuarioId(@PathVariable Long usuarioId) {
+        List<Cliente> clientes = clienteService.getClientesByUsuarioId(usuarioId);
+        if (clientes.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(clientes, HttpStatus.OK);
     }
 
     @GetMapping
