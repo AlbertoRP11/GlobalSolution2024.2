@@ -16,6 +16,9 @@ public class Projeto {
     @NotNull
     private Long usuarioId;
 
+    @NotBlank
+    private String nomeProjeto;
+    
     @NotNull
     private double orcamento;
 
