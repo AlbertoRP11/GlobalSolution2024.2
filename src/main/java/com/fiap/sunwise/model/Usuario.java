@@ -24,9 +24,6 @@ public class Usuario {
     @NotBlank @Size(min = 6, max = 6, message = "{usuario.senha.size}")
     private String senha;
 
-    @NotBlank
-    private String role;
-
     @NotBlank(message = "{usuario.nome.notblank}")
     @Size(min = 3, message =  "{usuario.nome.size}")
     private String nomeEmpresa;
