@@ -73,7 +73,6 @@ public class UsuarioController {
         }
 
         usuario.setEmail(u.getEmail());
-        usuario.setRole(u.getRole());
         usuario.setSenha(u.getSenha());
         usuarioRepository.save(usuario);
 
