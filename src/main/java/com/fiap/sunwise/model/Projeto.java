@@ -24,7 +24,6 @@ public class Projeto {
 
     @NotNull
     private double tarifaMensal;
-
     
     private int tempoRetornoInvestimentoMeses;
    
