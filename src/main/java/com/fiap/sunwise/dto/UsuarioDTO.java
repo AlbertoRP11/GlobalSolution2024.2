@@ -10,10 +10,9 @@ public class UsuarioDTO {
 
     private Long id;
     private String email;
-    private String role;
     private String nomeEmpresa;
 
     public static UsuarioDTO transformaEmDTO(Usuario usuario) {
-        return new UsuarioDTO(usuario.getId(), usuario.getEmail(), usuario.getRole(), usuario.getNomeEmpresa());
+        return new UsuarioDTO(usuario.getId(), usuario.getEmail(), usuario.getNomeEmpresa());
     }
 }

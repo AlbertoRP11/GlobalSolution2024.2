@@ -1,6 +1,8 @@
 package com.fiap.sunwise.controller;
 
 import com.fiap.sunwise.model.Projeto;
+import com.fiap.sunwise.model.Usuario;
+import com.fiap.sunwise.repository.UsuarioRepository;
 import com.fiap.sunwise.service.ProjetoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,6 +20,8 @@ public class ProjetoController {
 
     @Autowired
     private ProjetoService projetoService;
+    @Autowired
+    UsuarioRepository usuarioRepository;
 
     @PostMapping
     @Operation(summary = "Cadastra um projeto no sistema.")
@@ -34,6 +38,16 @@ public class ProjetoController {
             return new ResponseEntity<>(projeto, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/usuario/{usuarioId}")
+    @Operation(summary = "Busca todos os projetos de um usuário.")
+    public ResponseEntity<List<Projeto>> getProjetosByUsuarioId(@PathVariable Long usuarioId) {
+        List<Projeto> projetos = projetoService.getProjetosByUsuarioId(usuarioId);
+        if (projetos.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(projetos, HttpStatus.OK);
     }
 
     @GetMapping
