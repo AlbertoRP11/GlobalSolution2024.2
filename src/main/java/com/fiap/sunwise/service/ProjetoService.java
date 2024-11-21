@@ -71,13 +71,11 @@ public class ProjetoService {
         calcularCamposProjeto(projetoExistente);
 
         entityManager.createNativeQuery(
-                "BEGIN pkg_projeto.atualizar_projeto(:id,:nomeProjeto, :orcamento, :tarifaMensal, :tempoRetorno, :clienteId, :usuarioId, :economiaMensal, :retornoEmAnos, :economia10Anos, :impactoAmbiental, :co2Evitado10Anos); END;")
+                "BEGIN pkg_projeto.atualizar_projeto(:id,:nomeProjeto, :orcamento, :tarifaMensal, :tempoRetorno, :economiaMensal, :retornoEmAnos, :economia10Anos, :impactoAmbiental, :co2Evitado10Anos); END;")
                 .setParameter("nomeProjeto", projetoExistente.getNomeProjeto())
                 .setParameter("orcamento", projetoExistente.getOrcamento())
                 .setParameter("tarifaMensal", projetoExistente.getTarifaMensal())
                 .setParameter("tempoRetorno", projetoExistente.getTempoRetornoInvestimentoMeses())
-                .setParameter("clienteId", projetoExistente.getCliente().getId())
-                .setParameter("usuarioId", projetoExistente.getUsuarioId())
                 .setParameter("economiaMensal", projetoExistente.getEconomiaMensal())
                 .setParameter("retornoEmAnos", projetoExistente.getRetornoEmAnos())
                 .setParameter("economia10Anos", projetoExistente.getEconomia10Anos())

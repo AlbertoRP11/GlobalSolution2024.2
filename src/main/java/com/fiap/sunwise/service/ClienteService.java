@@ -28,7 +28,6 @@ public class ClienteService {
                 .setParameter("id", id)
                 .getSingleResult();
     }
-
     @Transactional
     public void inserirCliente(String nome, String email, String endereco, String telefone, Long userId) {
         entityManager.createNativeQuery("BEGIN pkg_cliente.inserir_cliente(NULL, :nome, :email, :endereco, :telefone, :userId); END;")
@@ -36,7 +35,7 @@ public class ClienteService {
                 .setParameter("email", email)
                 .setParameter("endereco", endereco)
                 .setParameter("telefone", telefone)
-                .setParameter("userId", userId)
+                .setParameter("userId", userId) // O último parâmetro corresponde a p_user_id
                 .executeUpdate();
     }
 
