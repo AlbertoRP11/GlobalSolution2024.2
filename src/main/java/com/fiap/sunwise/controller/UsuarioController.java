@@ -3,6 +3,8 @@ package com.fiap.sunwise.controller;
 import com.fiap.sunwise.dto.UsuarioDTO;
 import com.fiap.sunwise.model.Usuario;
 import com.fiap.sunwise.repository.UsuarioRepository;
+import com.fiap.sunwise.service.UsuarioService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -28,18 +30,8 @@ public class UsuarioController {
 
     @Autowired
     UsuarioRepository usuarioRepository;
-
-    @PostMapping
-    @ResponseStatus(CREATED)
-    @Operation(summary = "Cadastra um usuário no sistema.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "400", description = "Erro de validação do usuário"),
-            @ApiResponse(responseCode = "201", description = "Usuário cadastrado com sucesso")
-    })
-    public UsuarioDTO create(@RequestBody @Valid Usuario usuario) {
-        usuarioRepository.save(usuario);
-        return UsuarioDTO.transformaEmDTO(usuario);
-    }
+    @Autowired
+    UsuarioService usuarioService;
 
     @GetMapping("{id}")
     @Operation(summary = "Busca um usuário pelo id.")
@@ -56,42 +48,49 @@ public class UsuarioController {
 
     @GetMapping
     @Operation(summary = "Lista todos os usuários cadastrados no sistema.")
-    public List<UsuarioDTO> index(){
+    public List<UsuarioDTO> index() {
         List<Usuario> usuarios = usuarioRepository.findAll();
         return usuarios.stream()
                 .map(UsuarioDTO::transformaEmDTO)
                 .collect(Collectors.toList());
     }
 
+    @PostMapping
+    @ResponseStatus(CREATED)
+    @Operation(summary = "Cadastra um usuário no sistema.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "400", description = "Erro de validação do usuário"),
+            @ApiResponse(responseCode = "201", description = "Usuário cadastrado com sucesso")
+    })
+
+    public UsuarioDTO create(@RequestBody @Valid Usuario usuario) {
+        usuarioService.inserirUsuario(usuario.getNomeEmpresa(), usuario.getEmail(), usuario.getSenha());
+        Usuario usuarioCriado = usuarioRepository.findByEmail(usuario.getEmail()).orElse(null);
+        if (usuarioCriado == null) {
+            throw new RuntimeException("Erro ao buscar o usuário recém-criado.");
+        }
+    
+        return UsuarioDTO.transformaEmDTO(usuarioCriado);
+    }
+
     @PutMapping("{id}")
     @Operation(summary = "Atualiza os dados de um usuário com base no id.")
     public ResponseEntity<UsuarioDTO> update(@PathVariable Long id, @RequestBody Usuario u) {
-        Usuario usuario = usuarioRepository.findById(id).orElse(null);
-
-        if (usuario == null) {
+        if (!usuarioRepository.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-
-        usuario.setEmail(u.getEmail());
-        usuario.setSenha(u.getSenha());
-        usuario.setNomeEmpresa(u.getNomeEmpresa());
-        usuarioRepository.save(usuario);
-
-        System.out.println(usuario);
-        return ResponseEntity.ok(UsuarioDTO.transformaEmDTO(usuario));
+        usuarioService.atualizarUsuario(id, u.getNomeEmpresa(), u.getEmail(), u.getSenha());
+        return ResponseEntity.ok(UsuarioDTO.transformaEmDTO(u));
     }
 
     @DeleteMapping("{id}")
     @ResponseStatus(NO_CONTENT)
-    @Operation(summary = "Apaga um usuário do sistema.")
+    @Operation(summary = "Apaga um usuário do sistema usando uma procedure.")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        Usuario usuario = usuarioRepository.findById(id).orElse(null);
-
-        if (usuario == null) {
+        if (!usuarioRepository.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        usuarioRepository.delete(usuario);
-
+        usuarioService.deletarUsuario(id);
         return ResponseEntity.noContent().build();
     }
 }

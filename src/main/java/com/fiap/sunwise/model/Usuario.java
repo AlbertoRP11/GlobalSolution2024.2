@@ -5,14 +5,11 @@ import lombok.Data;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.Setter;
 
-import java.util.List;
 
 @Data
 @Entity
-@Table(name = "TB_SNW_USUARIOS")
+@Table(name = "T_SNW_USER") 
 public class Usuario {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)

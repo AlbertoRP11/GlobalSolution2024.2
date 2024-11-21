@@ -1,10 +1,8 @@
 package com.fiap.sunwise.controller;
 
 import com.fiap.sunwise.model.Cliente;
-import com.fiap.sunwise.model.Projeto;
 import com.fiap.sunwise.repository.ClienteRepository;
 import com.fiap.sunwise.service.ClienteService;
-import com.fiap.sunwise.service.ProjetoService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,15 +22,10 @@ public class ClienteController {
 
     @Autowired
     private ClienteRepository clienteRepository;
-     @Autowired
+    @Autowired
     private ClienteService clienteService;
 
-    @PostMapping
-    @Operation(summary = "Cadastra um cliente no sistema.")
-    public ResponseEntity<Cliente> criarCliente(@Valid @RequestBody Cliente cliente) {
-        Cliente clienteCriado = clienteRepository.save(cliente);
-        return new ResponseEntity<>(clienteCriado, HttpStatus.CREATED);
-    }
+
 
     @GetMapping("/{id}")
     @Operation(summary = "Busca um cliente pelo id.")
@@ -57,24 +50,35 @@ public class ClienteController {
         return clienteRepository.findAll();
     }
 
+    @PostMapping
+    @Operation(summary = "Cadastra um cliente no sistema.")
+    public ResponseEntity<Cliente> criarCliente(@Valid @RequestBody Cliente cliente) {
+        clienteService.inserirCliente(cliente.getNome(), cliente.getEmail(), cliente.getEndereco(), cliente.getTelefone(), cliente.getUsuarioId());
+        Cliente clienteCriado = clienteRepository.findByEmail(cliente.getEmail()).orElse(null);
+        if (clienteCriado == null) {
+            throw new RuntimeException("Erro ao buscar o cliente recém-criado.");
+        }
+    
+        return new ResponseEntity<>(clienteCriado, HttpStatus.CREATED);
+    }
+
     @PutMapping("/{id}")
     @Operation(summary = "Atualiza os dados de um cliente com base no id.")
     public ResponseEntity<Cliente> atualizarCliente(@PathVariable Long id, @Valid @RequestBody Cliente clienteAtualizado) {
-        if (!clienteRepository.existsById(id)) {
+        if (!clienteService.clienteExiste(id)) {
             return ResponseEntity.notFound().build();
         }
-        clienteAtualizado.setId(id);
-        Cliente clienteSalvo = clienteRepository.save(clienteAtualizado);
-        return ResponseEntity.ok(clienteSalvo);
+        clienteService.atualizarCliente(id, clienteAtualizado.getNome(), clienteAtualizado.getEmail(), clienteAtualizado.getEndereco(), clienteAtualizado.getTelefone());
+        return ResponseEntity.ok(clienteAtualizado);
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Apaga um cliente do sistema.")
     public ResponseEntity<Void> excluirCliente(@PathVariable Long id) {
-        if (!clienteRepository.existsById(id)) {
+        if (!clienteService.clienteExiste(id)) {
             return ResponseEntity.notFound().build();
         }
-        clienteRepository.deleteById(id);
+        clienteService.deletarCliente(id);
         return ResponseEntity.noContent().build();
     }
 }

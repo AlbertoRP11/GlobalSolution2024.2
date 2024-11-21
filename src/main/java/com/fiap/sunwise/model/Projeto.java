@@ -2,19 +2,22 @@ package com.fiap.sunwise.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 @Data
 @Entity
-@Table(name = "TB_SNW_PROJETOS")
+@Table(name = "T_SNW_PROJETO")
 public class Projeto {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotNull
     private Long usuarioId;
+    
+    @NotNull
+    private String nomeProjeto;
 
     @NotNull
     private double orcamento;
@@ -24,13 +27,13 @@ public class Projeto {
 
     @NotNull
     private double tarifaMensal;
-    
+
     private int tempoRetornoInvestimentoMeses;
-   
+
     private double economiaMensal;
-  
+
     private String retornoEmAnos;
-  
+
     private double economia10Anos;
 
     private String impactoAmbiental;

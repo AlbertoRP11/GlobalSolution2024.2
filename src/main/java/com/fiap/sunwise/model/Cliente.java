@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotNull;
 
 @Data
 @Entity
-@Table(name = "TB_SNW_CLIENTES")
+@Table(name = "T_SNW_CLIENTE")
 public class Cliente {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
