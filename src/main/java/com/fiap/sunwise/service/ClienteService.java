@@ -19,8 +19,8 @@ public class ClienteService {
     @Autowired
     private EntityManager entityManager;
 
-    public List<Cliente> getClientesByUsuarioId(Long usuarioId) {
-        return clienteRepository.findByUsuarioId(usuarioId);
+    public List<Cliente> getClientesByUserId(Long UserId) {
+        return clienteRepository.findByUserId(UserId);
     }
 
     public boolean clienteExiste(Long id) {
@@ -30,12 +30,13 @@ public class ClienteService {
     }
     @Transactional
     public void inserirCliente(String nome, String email, String endereco, String telefone, Long userId) {
+        System.out.println("userId recebido: " + userId);
         entityManager.createNativeQuery("BEGIN pkg_cliente.inserir_cliente(NULL, :nome, :email, :endereco, :telefone, :userId); END;")
                 .setParameter("nome", nome)
                 .setParameter("email", email)
                 .setParameter("endereco", endereco)
                 .setParameter("telefone", telefone)
-                .setParameter("userId", userId) // O último parâmetro corresponde a p_user_id
+                .setParameter("userId", userId)
                 .executeUpdate();
     }
 

@@ -1,13 +1,13 @@
-// package com.fiap.sunwise.service;
+package com.fiap.sunwise.service;
 
-// import org.springframework.amqp.rabbit.annotation.RabbitListener;
-// import org.springframework.stereotype.Service;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.stereotype.Service;
 
-// @Service
-// public class RabbitMQConsumer {
+@Service
+public class RabbitMQConsumer {
 
-//     @RabbitListener(queues = "sunwise_queue")
-//     public void receiveMessage(String message) {
-//         System.out.println("Received Message: " + message);
-//     }
-// }
+    @RabbitListener(queues = "sunwise_queue")
+    public void receiveMessage(String message) {
+        System.out.println("Received Message: " + message);
+    }
+}

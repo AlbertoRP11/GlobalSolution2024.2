@@ -24,24 +24,29 @@ public class ProjetoService {
     @Autowired
     private EntityManager entityManager;
 
-    @Transactional
-    public void inserirProjeto(Projeto projeto) {
-        calcularCamposProjeto(projeto);
-        entityManager.createNativeQuery(
-                "BEGIN pkg_projeto.inserir_projeto(NULL, :nomeProjeto, :orcamento, :tarifaMensal, :tempoRetorno, :clienteId, :usuarioId, :economiaMensal, :retornoEmAnos, :economia10Anos, :impactoAmbiental, :co2Evitado10Anos); END;")
-                .setParameter("nomeProjeto", projeto.getNomeProjeto())
-                .setParameter("orcamento", projeto.getOrcamento())
-                .setParameter("tarifaMensal", projeto.getTarifaMensal())
-                .setParameter("tempoRetorno", projeto.getTempoRetornoInvestimentoMeses())
-                .setParameter("clienteId", projeto.getCliente().getId())
-                .setParameter("usuarioId", projeto.getUsuarioId())
-                .setParameter("economiaMensal", projeto.getEconomiaMensal())
-                .setParameter("retornoEmAnos", projeto.getRetornoEmAnos())
-                .setParameter("economia10Anos", projeto.getEconomia10Anos())
-                .setParameter("impactoAmbiental", projeto.getImpactoAmbiental())
-                .setParameter("co2Evitado10Anos", projeto.getCo2Evitado10Anos())
-                .executeUpdate();
-    }
+        @Transactional
+        public Projeto inserirProjeto(Projeto projeto) {
+            calcularCamposProjeto(projeto);
+            entityManager.createNativeQuery(
+                    "BEGIN pkg_projeto.inserir_projeto(NULL, :nomeProjeto, :orcamento, :tarifaMensal, :tempoRetorno, :economiaMensal, :retornoEmAnos, :economia10Anos, :impactoAmbiental, :co2Evitado10Anos,:clienteId, :userId ); END;")
+                    .setParameter("nomeProjeto", projeto.getNomeProjeto())
+                    .setParameter("orcamento", projeto.getOrcamento())
+                    .setParameter("tarifaMensal", projeto.getTarifaMensal())
+                    .setParameter("tempoRetorno", projeto.getTempoRetornoInvestimentoMeses())
+                    .setParameter("economiaMensal", projeto.getEconomiaMensal())
+                    .setParameter("retornoEmAnos", projeto.getRetornoEmAnos())
+                    .setParameter("economia10Anos", projeto.getEconomia10Anos())
+                    .setParameter("impactoAmbiental", projeto.getImpactoAmbiental())
+                    .setParameter("co2Evitado10Anos", projeto.getCo2Evitado10Anos())
+                    .setParameter("clienteId", projeto.getCliente().getId())
+                    .setParameter("userId", projeto.getUserId())
+                    .executeUpdate();
+            entityManager.flush(); // Garante que as operações pendentes sejam executadas
+
+            // Recuperar o projeto recém-criado pode ser específico para o seu setup, 
+            // talvez algum identificador único de entrada seja necessário.
+            return projeto; // Se           
+        }
 
     @Transactional
     public Projeto atualizarProjeto(Long id, Projeto projeto) {
@@ -56,6 +61,8 @@ public class ProjetoService {
         projetoExistente.setNomeProjeto(projeto.getNomeProjeto());
         projetoExistente.setOrcamento(projeto.getOrcamento());
         projetoExistente.setTarifaMensal(projeto.getTarifaMensal());
+
+        System.out.println(projetoExistente);
 
         // Atualiza o cliente (se fornecido)
         if (projeto.getCliente() != null && projeto.getCliente().getId() != null) {
@@ -103,8 +110,8 @@ public class ProjetoService {
         return projeto.orElse(null);
     }
 
-    public List<Projeto> getProjetosByUsuarioId(Long usuarioId) {
-        return projetoRepository.findByUsuarioId(usuarioId);
+    public List<Projeto> getProjetosByUserId(Long UserId) {
+        return projetoRepository.findByUserId(UserId);
     }
 
     public List<Projeto> getAllProjetos() {

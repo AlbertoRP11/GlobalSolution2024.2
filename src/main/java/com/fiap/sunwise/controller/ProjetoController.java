@@ -1,7 +1,6 @@
 package com.fiap.sunwise.controller;
 
 import com.fiap.sunwise.model.Projeto;
-import com.fiap.sunwise.repository.ProjetoRepository;
 import com.fiap.sunwise.repository.UsuarioRepository;
 import com.fiap.sunwise.service.ProjetoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,8 +22,6 @@ public class ProjetoController {
     @Autowired
     private ProjetoService projetoService;
     @Autowired
-    private ProjetoRepository projetoRepository;
-    @Autowired
     UsuarioRepository usuarioRepository;
 
     @GetMapping("/{id}")
@@ -39,8 +36,8 @@ public class ProjetoController {
 
     @GetMapping("/usuario/{usuarioId}")
     @Operation(summary = "Busca todos os projetos de um usuário.")
-    public ResponseEntity<List<Projeto>> getProjetosByUsuarioId(@PathVariable Long usuarioId) {
-        List<Projeto> projetos = projetoService.getProjetosByUsuarioId(usuarioId);
+    public ResponseEntity<List<Projeto>> getProjetosByUserId(@PathVariable Long UserId) {
+        List<Projeto> projetos = projetoService.getProjetosByUserId(UserId);
         if (projetos.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -57,9 +54,7 @@ public class ProjetoController {
     @PostMapping
     @Operation(summary = "Cadastra um projeto no sistema.")
     public ResponseEntity<Projeto> criarProjeto(@Valid @RequestBody Projeto projeto) {
-        projetoService.inserirProjeto(projeto);
-
-        Projeto projetoCriado = projetoRepository.findById(projeto.getId()).orElse(null);
+        Projeto projetoCriado = projetoService.inserirProjeto(projeto);
 
         if (projetoCriado == null) {
             throw new RuntimeException("Erro ao buscar o projeto recém-criado.");

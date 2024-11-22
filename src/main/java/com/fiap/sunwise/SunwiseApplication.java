@@ -8,6 +8,6 @@ public class SunwiseApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SunwiseApplication.class, args);
-	}
+	}				
 
 }

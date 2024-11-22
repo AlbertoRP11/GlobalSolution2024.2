@@ -36,8 +36,8 @@ public class ClienteController {
 
     @GetMapping("/usuario/{usuarioId}")
     @Operation(summary = "Busca todos os Clientes de um usuário.")
-    public ResponseEntity<List<Cliente>> getClientesByUsuarioId(@PathVariable Long usuarioId) {
-        List<Cliente> clientes = clienteService.getClientesByUsuarioId(usuarioId);
+    public ResponseEntity<List<Cliente>> getClientesByUserId(@PathVariable Long UserId) {
+        List<Cliente> clientes = clienteService.getClientesByUserId(UserId);
         if (clientes.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -53,7 +53,9 @@ public class ClienteController {
     @PostMapping
     @Operation(summary = "Cadastra um cliente no sistema.")
     public ResponseEntity<Cliente> criarCliente(@Valid @RequestBody Cliente cliente) {
-        clienteService.inserirCliente(cliente.getNome(), cliente.getEmail(), cliente.getEndereco(), cliente.getTelefone(), cliente.getUsuarioId());
+        System.out.println("userId recebido: " + cliente.getUserId());
+        clienteService.inserirCliente(cliente.getNome(), cliente.getEmail(), cliente.getEndereco(), cliente.getTelefone(), cliente.getUserId());
+        
         Cliente clienteCriado = clienteRepository.findByEmail(cliente.getEmail()).orElse(null);
         if (clienteCriado == null) {
             throw new RuntimeException("Erro ao buscar o cliente recém-criado.");
