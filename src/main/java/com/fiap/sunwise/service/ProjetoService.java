@@ -110,8 +110,8 @@ public class ProjetoService {
         return projeto.orElse(null);
     }
 
-    public List<Projeto> getProjetosByUserId(Long UserId) {
-        return projetoRepository.findByUserId(UserId);
+    public List<Projeto> getProjetosByUserId(Long userId) {
+        return projetoRepository.findByUserId(userId);
     }
 
     public List<Projeto> getAllProjetos() {

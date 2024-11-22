@@ -34,10 +34,10 @@ public class ProjetoController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/usuario/{usuarioId}")
+    @GetMapping("/usuario/{userId}")
     @Operation(summary = "Busca todos os projetos de um usuário.")
-    public ResponseEntity<List<Projeto>> getProjetosByUserId(@PathVariable Long UserId) {
-        List<Projeto> projetos = projetoService.getProjetosByUserId(UserId);
+    public ResponseEntity<List<Projeto>> getProjetosByUserId(@PathVariable Long userId) {
+        List<Projeto> projetos = projetoService.getProjetosByUserId(userId);
         if (projetos.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

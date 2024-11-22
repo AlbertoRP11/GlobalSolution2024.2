@@ -19,8 +19,8 @@ public class ClienteService {
     @Autowired
     private EntityManager entityManager;
 
-    public List<Cliente> getClientesByUserId(Long UserId) {
-        return clienteRepository.findByUserId(UserId);
+    public List<Cliente> getClientesByUserId(Long userId) {
+        return clienteRepository.findByUserId(userId);
     }
 
     public boolean clienteExiste(Long id) {

@@ -34,10 +34,10 @@ public class ClienteController {
         return cliente.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/usuario/{usuarioId}")
+    @GetMapping("/usuario/{userId}")
     @Operation(summary = "Busca todos os Clientes de um usuário.")
-    public ResponseEntity<List<Cliente>> getClientesByUserId(@PathVariable Long UserId) {
-        List<Cliente> clientes = clienteService.getClientesByUserId(UserId);
+    public ResponseEntity<List<Cliente>> getClientesByUserId(@PathVariable Long userId) {
+        List<Cliente> clientes = clienteService.getClientesByUserId(userId);
         if (clientes.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

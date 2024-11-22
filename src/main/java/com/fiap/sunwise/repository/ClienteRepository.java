@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.fiap.sunwise.model.Cliente;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
-    List<Cliente> findByUserId(Long UserId);
+    List<Cliente> findByUserId(Long userId);
     Optional<Cliente> findByEmail(String email);
 }
